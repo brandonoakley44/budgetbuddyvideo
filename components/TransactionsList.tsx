@@ -1,5 +1,6 @@
 import { TouchableOpacity , View, Text } from "react-native";
 import { Category, Transaction } from "../types";
+import TransactionListItem from "./TransactionListItem";
 
 
 export default function TransactionsList({
@@ -12,8 +13,13 @@ export default function TransactionsList({
     deleteTransaction: (id: number) => Promise<void>;
 }) {
     return (
-        <View>
+        <View style={{ gap: 15 }}>
             {transactions.map((transaction) => {
+
+                const categoryForCurrentItem = categories.find(
+                    (category) => category.id === transaction.category_id
+                )
+
                 return (
                     <TouchableOpacity
                     key={transaction.id}
@@ -21,7 +27,7 @@ export default function TransactionsList({
                     onPress={() => deleteTransaction(transaction.id)}
                     >
                         {/** transaction item */}
-                        <Text>{transaction.description} amount: { transaction.amount} </Text>
+                       <TransactionListItem transaction={transaction} categoryInfo={categoryForCurrentItem}  />
                     </TouchableOpacity>
                 )
             })}
